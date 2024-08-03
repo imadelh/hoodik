@@ -1,5 +1,18 @@
 # Hoodik
 
+- Install rust 1.69: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  rustup install 1.69.0
+  rustup default 1.69.0
+  install wasm: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+- Install npm 16: nvm use 16
+  cd web
+  yarn add bcrypt
+- Build wasm
+  yarn workspace @hoodik/cryptfns wasm-pack
+- see web-e2e & package.json
+  start server: RUST_LOG=error $PWD/target/release/hoodik
+  Run tests: yarn workspace @hoodik/web test:e2e
+
 <p align="center">
   <img src="./web/public/android-icon-192x192.png" alt="Hoodik" />
 </p>

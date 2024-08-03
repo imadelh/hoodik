@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import * as crypto from '../cryptfns'
@@ -82,10 +83,19 @@ export const store = defineStore('register', () => {
     login: LoginStore,
     store: CryptoStore
   ): Promise<Authenticated | null> {
+    // Hash the password before sending it to the server
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+    const updatedCredentials: CreateUser = {
+      ...data,
+      password: hashedPassword
+    };
+
+
     const response = await Api.post<CreateUser, Authenticated>(
       '/api/auth/register',
       undefined,
-      data
+      updatedCredentials
     )
 
     if (!response.body) {

@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import Api from '../api'
 import * as cryptfns from '../cryptfns'
 import { localDateFromUtcString } from '..'
@@ -205,10 +206,19 @@ export const store = defineStore('login', () => {
     crypto: CryptoStore,
     credentials: Credentials
   ): Promise<Authenticated> {
+    // Hash the password
+
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(credentials.password, saltRounds);
+    const updatedCredentials: Credentials = {
+      ...credentials,
+      password: hashedPassword
+    };
+
     const response = await Api.post<Credentials, Authenticated>(
       '/api/auth/login',
       undefined,
-      credentials
+      updatedCredentials
     )
 
     if (!response.body) {
