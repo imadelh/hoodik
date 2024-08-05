@@ -10,8 +10,31 @@
 - Build wasm
   yarn workspace @hoodik/cryptfns wasm-pack
 - see web-e2e & package.json
-  start server: RUST_LOG=error $PWD/target/release/hoodik
+  start server: 
+  RUST_LOG=error $PWD/target/release/hoodik && yarn web:build && yarn workspace @hoodik/web run preview
   Run tests: yarn workspace @hoodik/web test:e2e
+
+
+===
+
+docker build -t hoodik .
+
+docker run -it -p 8000:4173 \
+  -v "$(pwd):/home/ubuntu" \
+  hoodik bash
+
+  curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+  yarn workspace @hoodik/cryptfns wasm-pack
+
+  yarn add mock-aws-s3 aws-sdk nock
+
+  - Build
+  cargo build --bin hoodik --release
+  && yarn web:build
+
+  RUST_LOG=error $PWD/target/release/hoodik && yarn workspace @hoodik/web run dev --host --port 4173
+  
+ && yarn workspace @hoodik/web run preview
 
 <p align="center">
   <img src="./web/public/android-icon-192x192.png" alt="Hoodik" />
